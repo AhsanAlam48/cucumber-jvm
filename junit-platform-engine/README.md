@@ -124,6 +124,28 @@ Add the following to your `pom.xml`:
 Add the following to your `build.gradle`:
 
 ```groovy
+task consoleLauncherTest(type: JavaExec) {
+  dependsOn testClasses
+  classpath = sourceSets.test.runtimeClasspath
+  main = "org.junit.platform.console.ConsoleLauncher"
+  args = [
+    "--scan-classpath",
+    "--include-engine",
+    "cucumber",
+    "--reports-dir",
+    reportsDir
+  ]
+}
+
+test {
+  dependsOn consoleLauncherTest
+  exclude "**/*"
+}
+```
+
+Or add the following to your `build.gradle.kts`:
+
+```kotlin
 tasks {
 
 	val consoleLauncherTest by registering(JavaExec::class) {
